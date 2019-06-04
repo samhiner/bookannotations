@@ -17,13 +17,14 @@ function highlightRange(range) {
 	range.surroundContents(newNode);
 }*/
 
+//TODO make this server side and create a client side application
 
 function range(start, stop) {
-	var rangeList = []
+	var rangeList = [];
 	for (var x = start; x < stop; x++) {
-		rangeList.push(x)
+		rangeList.push(x);
 	}
-	return rangeList
+	return rangeList;
 }
 
 // CREATE TEXT
@@ -34,27 +35,32 @@ for (x = 0; x < 100; x++) {
 	text[x] = [];
 }
 
-
 // HIGHLIGHT FORUM
 
 function highlight(start, stop) {
 	var forums = '';
 	for (x = start; x < stop; x++) {
 		if (text[x] != []) {
-			forums += String(text[x]) + ';'
+			forums += String(text[x]) + ';';
 		}
 	}
-	return forums
+	return forums;
 }
 
 function comment(comment, start, stop) {
 	//TODO should be a number that leads to the comment that way it takes up less memory for big comments
 	//TODO above comment also avoids you getting a duplicate comment for every char of overlapping highlight
+
+	comments = new File ('comments.txt');
+	comments.writeln(comment)
+	commentIndex = comments.length - 1 //TODO actually get length of file
+	comments.close()
+
 	for (var x = start; x < stop; x++) {
-		text[x].push(comment)
+		text[x].push(commentIndex);
 	}
 }
 
-document.write(highlight(0,20))
-comment('hello', 0, 10)
-document.write(highlight(0,20))
+document.getElementById('output').innerHTML += highlight(0,20) + '<br>';
+comment('hello', 0, 10);
+document.getElementById('output').innerHTML += highlight(0,20);
